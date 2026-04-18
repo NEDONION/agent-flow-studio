@@ -1,6 +1,11 @@
-# Agent Flow Studio
+# Agent Flow Studio (Desktop Only)
 
-基于 `React + TypeScript + Vite + Electron` 的桌面应用项目。
+基于 `React + TypeScript + Vite + Electron` 的纯桌面应用项目。
+
+## 项目定位
+
+- 仅提供 Electron 桌面端
+- 不提供 Web 端部署与运行支持
 
 ## 环境要求
 
@@ -56,10 +61,10 @@ npm run build
 - `npm run dev`：本地开发启动（Vite + Electron）
 - `npm run build`：构建桌面安装包
 - `npm run lint`：ESLint 检查
-- `npm run preview`：预览前端打包结果（仅 Vite 静态资源）
 
 ## 常见问题
 
 - `npm run dev` 没有弹出窗口：确认当前环境有图形界面（非纯 SSH 无桌面环境）。
 - 首次安装依赖失败：删除 `node_modules` 后重试 `npm install`。
 - 需要修改安装包名称或平台配置：编辑 `electron-builder.json5`（如 `productName`、`mac/win/linux` 目标配置）。
+- 为什么不能直接用浏览器打开：项目在渲染进程使用了 Electron 的 `ipcRenderer`，因此定位为桌面应用而非纯 Web 应用。
