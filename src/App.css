@@ -1,44 +1,47 @@
-.chat-page {
-  width: min(920px, 100%);
+.app-shell {
+  width: min(980px, 100%);
   margin: 0 auto;
-  padding: 20px;
-  display: grid;
-  gap: 14px;
-}
-
-.header h1 {
-  margin: 0;
-  font-size: 24px;
-}
-
-.header p {
-  margin: 2px 0 4px;
-  color: #4b5563;
-}
-
-.header small {
-  color: #2563eb;
-}
-
-.messages {
-  border: 1px solid #dbe1ea;
-  border-radius: 10px;
   padding: 12px;
-  min-height: 300px;
+  display: grid;
+  gap: 12px;
+}
+
+.entry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.entry-card {
+  min-height: 170px;
+}
+
+.entry-desc {
+  margin-top: 12px;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.messages-card {
+  min-height: 330px;
   max-height: 52vh;
   overflow: auto;
-  background: #f8fbff;
-  display: grid;
-  gap: 10px;
 }
 
-.empty {
-  color: #6b7280;
+.empty-wrap {
+  padding: 24px 0;
 }
 
 .message {
   border-radius: 10px;
   padding: 10px 12px;
+  margin-bottom: 10px;
 }
 
 .message.user {
@@ -52,7 +55,7 @@
 .message-role {
   font-size: 12px;
   color: #6b7280;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .message-content {
@@ -62,52 +65,9 @@
 
 .composer {
   display: grid;
-  gap: 10px;
-}
-
-.composer label {
-  display: grid;
-  gap: 6px;
-  font-size: 14px;
-}
-
-.composer textarea {
-  width: 100%;
-  resize: vertical;
-  padding: 10px;
-  border: 1px solid #c9d4e0;
-  border-radius: 8px;
-  font: inherit;
-  box-sizing: border-box;
-}
-
-.actions {
-  display: flex;
   gap: 8px;
 }
 
-.actions button {
-  border: none;
-  border-radius: 8px;
-  padding: 9px 16px;
-  cursor: pointer;
-  background: #2563eb;
-  color: #fff;
-}
-
-.actions button.secondary {
-  background: #64748b;
-}
-
-.actions button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.error {
-  color: #b91c1c;
-  background: #fee2e2;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
-  padding: 8px 10px;
+.actions {
+  margin-top: 12px;
 }

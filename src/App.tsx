@@ -1,4 +1,5 @@
-import { FormEvent, useState } from 'react'
+import { KeyboardEvent, useState } from 'react'
+import { Banner, Button, Card, Empty, Space, Tag, TextArea, Typography } from '@douyinfe/semi-ui'
 import './App.css'
 
 type ChatRole = 'user' | 'assistant'
@@ -8,9 +9,12 @@ interface ChatItem {
   content: string
 }
 
+type PageView = 'home' | 'llmDebug'
+
 const DEFAULT_SYSTEM_PROMPT = '你是一个简洁、可靠的中文 AI 助手。'
 
 function App() {
+  const [view, setView] = useState<PageView>('home')
   const [systemPrompt, setSystemPrompt] = useState(DEFAULT_SYSTEM_PROMPT)
   const [input, setInput] = useState('')
   const [messages, setMessages] = useState<ChatItem[]>([])
@@ -18,8 +22,7 @@ function App() {
   const [model, setModel] = useState('')
   const [error, setError] = useState('')
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const sendMessage = async () => {
     if (loading) {
       return
     }
@@ -45,17 +48,58 @@ function App() {
     }
   }
 
-  return (
-    <div className="chat-page">
-      <header className="header">
-        <h1>Agent Flow Studio</h1>
-        <p>SiliconFlow 对话调试</p>
-        {model ? <small>当前模型: {model}</small> : null}
-      </header>
+  const onUserInputEnter = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (!event.shiftKey) {
+      event.preventDefault()
+      void sendMessage()
+    }
+  }
 
-      <section className="messages">
+  if (view === 'home') {
+    return (
+      <div className="app-shell">
+        <Typography.Title heading={3}>Agent Flow Studio</Typography.Title>
+        <Typography.Text type="tertiary">选择功能入口</Typography.Text>
+        <div className="entry-grid">
+          <Card
+            title="LLM 调试对话"
+            shadows="hover"
+            className="entry-card"
+            footerLine={true}
+            footer={
+              <Button type="primary" onClick={() => setView('llmDebug')}>
+                进入
+              </Button>
+            }
+          >
+            <Space spacing={8}>
+              <Tag color="blue">SiliconFlow</Tag>
+              <Tag color="green">Chat</Tag>
+            </Space>
+            <Typography.Paragraph className="entry-desc">
+              用于测试对话模型输入输出，不走 rerank。
+            </Typography.Paragraph>
+          </Card>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="app-shell">
+      <div className="chat-header">
+        <Space spacing={8}>
+          <Button onClick={() => setView('home')}>返回入口</Button>
+          <Typography.Title heading={4}>LLM 调试对话</Typography.Title>
+        </Space>
+        {model ? <Tag color="blue">当前模型: {model}</Tag> : null}
+      </div>
+
+      <Card className="messages-card" bodyStyle={{ padding: 16 }}>
         {messages.length === 0 ? (
-          <div className="empty">输入问题后开始对话。</div>
+          <div className="empty-wrap">
+            <Empty description="输入问题后开始对话" />
+          </div>
         ) : (
           messages.map((item, index) => (
             <div key={`${item.role}-${index}`} className={`message ${item.role}`}>
@@ -64,40 +108,44 @@ function App() {
             </div>
           ))
         )}
-      </section>
+      </Card>
 
-      <form className="composer" onSubmit={onSubmit}>
-        <label>
-          System Prompt
-          <textarea
+      <Card bodyStyle={{ padding: 16 }}>
+        <div className="composer">
+          <Typography.Text strong={true}>System Prompt</Typography.Text>
+          <TextArea
             rows={2}
             value={systemPrompt}
-            onChange={(event) => setSystemPrompt(event.target.value)}
+            onChange={setSystemPrompt}
+            disabled={loading}
+            showClear={true}
           />
-        </label>
-        <label>
-          用户输入
-          <textarea
+          <Typography.Text strong={true}>用户输入</Typography.Text>
+          <TextArea
             rows={4}
             value={input}
-            onChange={(event) => setInput(event.target.value)}
-            placeholder="请输入你要发送给模型的问题"
+            onChange={setInput}
+            onEnterPress={onUserInputEnter}
+            disabled={loading}
+            placeholder="请输入你要发送给模型的问题（Enter 发送，Shift+Enter 换行）"
+            showClear={true}
           />
-        </label>
-        <div className="actions">
-          <button type="submit" disabled={loading || !input.trim()}>
-            {loading ? '请求中...' : '发送'}
-          </button>
-          <button type="button" className="secondary" onClick={() => setMessages([])} disabled={loading}>
-            清空会话
-          </button>
         </div>
-      </form>
+        <Space className="actions" spacing={8}>
+          <Button type="primary" onClick={() => void sendMessage()} loading={loading} disabled={!input.trim()}>
+            发送
+          </Button>
+          <Button
+            onClick={() => setMessages([])}
+            disabled={loading}
+          >
+            清空会话
+          </Button>
+        </Space>
+      </Card>
 
       {error ? (
-        <div className="error">
-          {error}
-        </div>
+        <Banner type="danger" description={error} closeIcon={null} />
       ) : null}
     </div>
   )

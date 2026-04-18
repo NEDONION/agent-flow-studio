@@ -1,143 +1,97 @@
-import { ipcMain, app, BrowserWindow } from "electron";
-import { fileURLToPath } from "node:url";
-import path from "node:path";
-import { existsSync, readFileSync } from "node:fs";
-const __dirname$1 = path.dirname(fileURLToPath(import.meta.url));
-process.env.APP_ROOT = path.join(__dirname$1, "..");
-function loadEnvFile(filepath) {
-  if (!existsSync(filepath)) {
+import { ipcMain as S, app as p, BrowserWindow as T } from "electron";
+import { fileURLToPath as g } from "node:url";
+import n from "node:path";
+import { existsSync as C, readFileSync as j } from "node:fs";
+const A = n.dirname(g(import.meta.url));
+process.env.APP_ROOT = n.join(A, "..");
+function L(o) {
+  if (!C(o))
     return;
-  }
-  const content = readFileSync(filepath, "utf8");
-  const lines = content.split(/\r?\n/);
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith("#")) {
+  const f = j(o, "utf8").split(/\r?\n/);
+  for (const a of f) {
+    const i = a.trim();
+    if (!i || i.startsWith("#"))
       continue;
-    }
-    const index = trimmed.indexOf("=");
-    if (index < 1) {
+    const c = i.indexOf("=");
+    if (c < 1)
       continue;
-    }
-    const key = trimmed.slice(0, index).trim();
-    const rawValue = trimmed.slice(index + 1).trim();
-    if (!key || process.env[key] !== void 0) {
+    const r = i.slice(0, c).trim(), t = i.slice(c + 1).trim();
+    if (!r || process.env[r] !== void 0)
       continue;
-    }
-    const quoted = rawValue.startsWith('"') && rawValue.endsWith('"') || rawValue.startsWith("'") && rawValue.endsWith("'");
-    process.env[key] = quoted ? rawValue.slice(1, -1) : rawValue;
+    const l = t.startsWith('"') && t.endsWith('"') || t.startsWith("'") && t.endsWith("'");
+    process.env[r] = l ? t.slice(1, -1) : t;
   }
 }
-function loadLocalEnvFiles() {
-  loadEnvFile(path.join(process.env.APP_ROOT, ".env"));
-  loadEnvFile(path.join(process.env.APP_ROOT, ".env.local"));
+function F() {
+  L(n.join(process.env.APP_ROOT, ".env")), L(n.join(process.env.APP_ROOT, ".env.local"));
 }
-const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
-const MAIN_DIST = path.join(process.env.APP_ROOT, "dist-electron");
-const RENDERER_DIST = path.join(process.env.APP_ROOT, "dist");
-process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, "public") : RENDERER_DIST;
-loadLocalEnvFiles();
-const DEFAULT_CHAT_API_URL = "https://api.siliconflow.cn/v1/chat/completions";
-const DEFAULT_CHAT_MODEL = "Qwen/Qwen3-8B";
-function normalizeContent(content) {
-  if (typeof content === "string") {
-    return content.trim();
-  }
-  if (!Array.isArray(content)) {
-    return "";
-  }
-  return content.map((part) => {
-    if (typeof part === "string") {
-      return part;
-    }
-    if (part && typeof part === "object" && "text" in part && typeof part.text === "string") {
-      return part.text;
-    }
-    return "";
-  }).join("\n").trim();
+const w = process.env.VITE_DEV_SERVER_URL, b = n.join(process.env.APP_ROOT, "dist-electron"), I = n.join(process.env.APP_ROOT, "dist");
+process.env.VITE_PUBLIC = w ? n.join(process.env.APP_ROOT, "public") : I;
+F();
+const W = "https://api.siliconflow.cn/v1/chat/completions", y = "Qwen/Qwen3-8B";
+function U(o) {
+  return typeof o == "string" ? o.trim() : Array.isArray(o) ? o.map((e) => typeof e == "string" ? e : e && typeof e == "object" && "text" in e && typeof e.text == "string" ? e.text : "").join(`
+`).trim() : "";
 }
-ipcMain.handle("llm:chat", async (_event, payload) => {
-  var _a, _b, _c, _d, _e;
-  const message = (_a = payload == null ? void 0 : payload.message) == null ? void 0 : _a.trim();
-  if (!message) {
+S.handle("llm:chat", async (o, e) => {
+  var O, E, d, v, P;
+  const f = (O = e == null ? void 0 : e.message) == null ? void 0 : O.trim();
+  if (!f)
     throw new Error("message 不能为空");
-  }
-  const apiKey = (_b = process.env.SILICONFLOW_API_KEY) == null ? void 0 : _b.trim();
-  if (!apiKey) {
+  const a = (E = process.env.SILICONFLOW_API_KEY) == null ? void 0 : E.trim();
+  if (!a)
     throw new Error("缺少 SILICONFLOW_API_KEY，请在 .env 或系统环境变量里配置");
-  }
-  const apiUrl = (process.env.SILICONFLOW_API_URL_CHAT || DEFAULT_CHAT_API_URL).trim();
-  const model = (process.env.SILICONFLOW_MODEL_CHAT || DEFAULT_CHAT_MODEL).trim();
-  const messages = [];
-  const systemPrompt = (_c = payload == null ? void 0 : payload.systemPrompt) == null ? void 0 : _c.trim();
-  if (systemPrompt) {
-    messages.push({ role: "system", content: systemPrompt });
-  }
-  messages.push({ role: "user", content: message });
-  const response = await fetch(apiUrl, {
+  const i = (process.env.SILICONFLOW_API_URL_CHAT || W).trim(), c = (process.env.SILICONFLOW_MODEL_CHAT || y).trim(), r = [], t = (d = e == null ? void 0 : e.systemPrompt) == null ? void 0 : d.trim();
+  t && r.push({ role: "system", content: t }), r.push({ role: "user", content: f });
+  const l = await fetch(i, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`
+      Authorization: `Bearer ${a}`
     },
     body: JSON.stringify({
-      model,
-      messages,
+      model: c,
+      messages: r,
       temperature: 0.7
     })
-  });
-  const responseText = await response.text();
-  if (!response.ok) {
-    throw new Error(`SiliconFlow 请求失败（${response.status}）: ${responseText.slice(0, 500)}`);
-  }
-  let data;
+  }), _ = await l.text();
+  if (!l.ok)
+    throw new Error(`SiliconFlow 请求失败（${l.status}）: ${_.slice(0, 500)}`);
+  let m;
   try {
-    data = JSON.parse(responseText);
+    m = JSON.parse(_);
   } catch {
-    throw new Error(`SiliconFlow 返回非 JSON: ${responseText.slice(0, 500)}`);
+    throw new Error(`SiliconFlow 返回非 JSON: ${_.slice(0, 500)}`);
   }
-  const choice = (_d = data == null ? void 0 : data.choices) == null ? void 0 : _d[0];
-  const reply = normalizeContent((_e = choice == null ? void 0 : choice.message) == null ? void 0 : _e.content);
-  if (!reply) {
+  const u = (v = m == null ? void 0 : m.choices) == null ? void 0 : v[0], h = U((P = u == null ? void 0 : u.message) == null ? void 0 : P.content);
+  if (!h)
     throw new Error("SiliconFlow 返回内容为空，请检查模型配置");
-  }
   return {
-    reply,
-    model,
-    usage: data.usage ?? null
+    reply: h,
+    model: c,
+    usage: m.usage ?? null
   };
 });
-let win;
-function createWindow() {
-  win = new BrowserWindow({
-    icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
+let s;
+function R() {
+  s = new T({
+    icon: n.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
     webPreferences: {
-      preload: path.join(__dirname$1, "preload.mjs")
+      preload: n.join(A, "preload.mjs")
     }
-  });
-  win.webContents.on("did-finish-load", () => {
-    win == null ? void 0 : win.webContents.send("main-process-message", (/* @__PURE__ */ new Date()).toLocaleString());
-  });
-  if (VITE_DEV_SERVER_URL) {
-    win.loadURL(VITE_DEV_SERVER_URL);
-  } else {
-    win.loadFile(path.join(RENDERER_DIST, "index.html"));
-  }
+  }), s.webContents.on("did-finish-load", () => {
+    s == null || s.webContents.send("main-process-message", (/* @__PURE__ */ new Date()).toLocaleString());
+  }), w ? s.loadURL(w) : s.loadFile(n.join(I, "index.html"));
 }
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-    win = null;
-  }
+p.on("window-all-closed", () => {
+  process.platform !== "darwin" && (p.quit(), s = null);
 });
-app.on("activate", () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
+p.on("activate", () => {
+  T.getAllWindows().length === 0 && R();
 });
-app.whenReady().then(createWindow);
+p.whenReady().then(R);
 export {
-  MAIN_DIST,
-  RENDERER_DIST,
-  VITE_DEV_SERVER_URL
+  b as MAIN_DIST,
+  I as RENDERER_DIST,
+  w as VITE_DEV_SERVER_URL
 };
