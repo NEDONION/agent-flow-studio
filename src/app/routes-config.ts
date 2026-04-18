@@ -1,9 +1,26 @@
+export type AppGroup = 'agent' | 'llmops' | 'rlhf' | 'system'
+
 export interface AppRouteItem {
   key: string
   path: string
   label: string
-  group: 'agent' | 'llmops' | 'rlhf' | 'system'
+  group: AppGroup
 }
+
+interface GroupMetaItem {
+  key: AppGroup
+  label: string
+  defaultPath: string
+}
+
+export const GROUP_META: GroupMetaItem[] = [
+  { key: 'agent', label: 'AI Agent 回归测试', defaultPath: '/agent/cases' },
+  { key: 'llmops', label: 'LLMOps 监控巡检', defaultPath: '/llmops/inspect' },
+  { key: 'rlhf', label: 'RLHF 标注平台', defaultPath: '/rlhf/generate' },
+  { key: 'system', label: '系统', defaultPath: '/settings' },
+]
+
+export const PRIMARY_GROUPS: AppGroup[] = ['agent', 'llmops', 'rlhf']
 
 export const APP_ROUTES: AppRouteItem[] = [
   { key: 'agent-cases', path: '/agent/cases', label: '用例管理', group: 'agent' },
@@ -25,4 +42,12 @@ const routeMap = new Map(APP_ROUTES.map((route) => [route.path, route]))
 
 export function findRouteByPath(pathname: string): AppRouteItem | undefined {
   return routeMap.get(pathname)
+}
+
+export function getRoutesByGroup(group: AppGroup): AppRouteItem[] {
+  return APP_ROUTES.filter((route) => route.group === group)
+}
+
+export function getGroupMeta(group: AppGroup): GroupMetaItem {
+  return GROUP_META.find((item) => item.key === group) ?? GROUP_META[0]
 }
