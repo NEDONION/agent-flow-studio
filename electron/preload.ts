@@ -22,3 +22,9 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   // You can expose other APTs you need here.
   // ...
 })
+
+contextBridge.exposeInMainWorld('llm', {
+  chat(message: string, systemPrompt?: string) {
+    return ipcRenderer.invoke('llm:chat', { message, systemPrompt })
+  },
+})

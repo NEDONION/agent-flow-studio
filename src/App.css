@@ -1,42 +1,113 @@
-#root {
-  max-width: 1280px;
+.chat-page {
+  width: min(920px, 100%);
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 20px;
+  display: grid;
+  gap: 14px;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.header h1 {
+  margin: 0;
+  font-size: 24px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.header p {
+  margin: 2px 0 4px;
+  color: #4b5563;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.header small {
+  color: #2563eb;
 }
 
-.card {
-  padding: 2em;
+.messages {
+  border: 1px solid #dbe1ea;
+  border-radius: 10px;
+  padding: 12px;
+  min-height: 300px;
+  max-height: 52vh;
+  overflow: auto;
+  background: #f8fbff;
+  display: grid;
+  gap: 10px;
 }
 
-.read-the-docs {
-  color: #888;
+.empty {
+  color: #6b7280;
+}
+
+.message {
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.message.user {
+  background: #e8f0ff;
+}
+
+.message.assistant {
+  background: #eefbf1;
+}
+
+.message-role {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 2px;
+}
+
+.message-content {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.composer {
+  display: grid;
+  gap: 10px;
+}
+
+.composer label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.composer textarea {
+  width: 100%;
+  resize: vertical;
+  padding: 10px;
+  border: 1px solid #c9d4e0;
+  border-radius: 8px;
+  font: inherit;
+  box-sizing: border-box;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.actions button {
+  border: none;
+  border-radius: 8px;
+  padding: 9px 16px;
+  cursor: pointer;
+  background: #2563eb;
+  color: #fff;
+}
+
+.actions button.secondary {
+  background: #64748b;
+}
+
+.actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #b91c1c;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 8px 10px;
 }

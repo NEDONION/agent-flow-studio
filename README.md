@@ -13,6 +13,21 @@
 - npm `9+`
 - 本地桌面环境（Electron 需要图形界面）
 
+## LLM 配置（SiliconFlow 对话）
+
+在项目根目录创建 `.env.local`（或直接用系统环境变量）：
+
+```bash
+SILICONFLOW_API_KEY=你的key
+SILICONFLOW_API_URL_CHAT=https://api.siliconflow.cn/v1/chat/completions
+SILICONFLOW_MODEL_CHAT=Qwen/Qwen3-8B
+```
+
+说明：
+- 当前实现只走对话接口，不使用 rerank。
+- `SILICONFLOW_API_URL_CHAT`、`SILICONFLOW_MODEL_CHAT` 可不填，会使用默认值。
+- `SILICONFLOW_API_KEY` 必填，且不要提交到 Git。
+
 ## 初始化项目
 
 1. 克隆仓库
@@ -25,6 +40,13 @@ cd agent-flow-studio
 2. 安装依赖
 
 ```bash
+## npm 镜像
+npm config set registry https://registry.npmmirror.com
+
+export ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/"
+rm -rf node_modules package-lock.json
+npm install
+
 npm install
 ```
 

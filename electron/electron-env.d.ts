@@ -22,6 +22,17 @@ declare namespace NodeJS {
 }
 
 // Used in Renderer process, expose in `preload.ts`
+interface LlmChatResult {
+  reply: string
+  model: string
+  usage: Record<string, unknown> | null
+}
+
+interface LlmApi {
+  chat: (message: string, systemPrompt?: string) => Promise<LlmChatResult>
+}
+
 interface Window {
   ipcRenderer: import('electron').IpcRenderer
+  llm: LlmApi
 }

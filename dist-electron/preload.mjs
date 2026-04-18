@@ -20,3 +20,8 @@ electron.contextBridge.exposeInMainWorld("ipcRenderer", {
   // You can expose other APTs you need here.
   // ...
 });
+electron.contextBridge.exposeInMainWorld("llm", {
+  chat(message, systemPrompt) {
+    return electron.ipcRenderer.invoke("llm:chat", { message, systemPrompt });
+  }
+});
