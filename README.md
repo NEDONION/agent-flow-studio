@@ -39,6 +39,16 @@ cd agent-flow-studio
 
 2. 安装依赖
 
+> NPM 换国内源
+```bash
+npm config get registry
+npm config delete proxy
+npm config delete https-proxy
+npm config set registry https://registry.npmmirror.com
+npm cache clean --force
+npm install react-router-dom@6.30.1
+```
+
 ```bash
 ## npm 镜像
 npm config set registry https://registry.npmmirror.com

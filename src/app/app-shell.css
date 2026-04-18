@@ -1,0 +1,104 @@
+.shell-root {
+  min-height: 100%;
+  background: var(--semi-color-bg-0);
+}
+
+.shell-main {
+  min-height: calc(100% - 56px);
+}
+
+.shell-header-inner {
+  height: 100%;
+  padding: 0 var(--semi-spacing-base);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--semi-color-border);
+  background: var(--semi-color-bg-1);
+}
+
+.shell-side-nav {
+  background: var(--semi-color-bg-0);
+}
+
+.shell-side-toggle-wrap {
+  padding: var(--semi-spacing-base-tight);
+  border-top: 1px solid var(--semi-color-border);
+}
+
+.shell-workspace {
+  min-width: 0;
+}
+
+.shell-content-wrap {
+  padding: var(--semi-spacing-base);
+  overflow: auto;
+  background: var(--semi-color-bg-0);
+}
+
+.shell-content-inner {
+  min-height: calc(100% - 40px);
+}
+
+.context-panel {
+  height: 100%;
+  overflow: auto;
+  padding: var(--semi-spacing-base-tight);
+  background: var(--semi-color-bg-0);
+}
+
+.shell-footer-inner {
+  height: 100%;
+  padding: 0 var(--semi-spacing-base);
+  border-top: 1px solid var(--semi-color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--semi-color-bg-1);
+}
+
+.shell-progress-wrap {
+  width: 140px;
+}
+
+.page-block {
+  display: grid;
+  gap: var(--semi-spacing-base-tight);
+}
+
+.page-toolbar {
+  display: flex;
+  gap: var(--semi-spacing-tight);
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.page-grid-2 {
+  display: grid;
+  gap: var(--semi-spacing-base-tight);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.page-grid-3 {
+  display: grid;
+  gap: var(--semi-spacing-base-tight);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 1280px) {
+  .page-grid-2,
+  .page-grid-3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .shell-header-inner {
+    gap: var(--semi-spacing-tight);
+    flex-wrap: wrap;
+    align-content: center;
+    padding-top: var(--semi-spacing-extra-tight);
+    padding-bottom: var(--semi-spacing-extra-tight);
+    height: auto;
+    min-height: 56px;
+  }
+}
