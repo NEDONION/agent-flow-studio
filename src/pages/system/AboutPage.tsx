@@ -5,7 +5,7 @@ export function AboutPage() {
     <div className="page-block">
       <Card title="关于 agent-flow-studio" bodyStyle={{ display: 'grid', gap: 12 }}>
         <Typography.Paragraph>
-          这是一个桌面端 AI 工作台，整合 AI Agent 回归测试、LLMOps 监控巡检、RLHF 标注三个模块。
+          这是一个桌面端 AI 工作台，整合 AI Agent 回归测试、RLHF 标注两个核心模块。
         </Typography.Paragraph>
 
         <Space>

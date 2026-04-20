@@ -1,8 +1,56 @@
 .shell-root {
+  --shell-border: 1px solid rgba(15, 23, 42, 0.08);
+  --shell-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+  --shell-surface: rgba(255, 255, 255, 0.92);
   height: 100%;
   min-width: 0;
   overflow: hidden;
-  background: var(--semi-color-bg-0);
+  background:
+    radial-gradient(1600px 700px at 0% -15%, rgba(14, 165, 233, 0.14), transparent 55%),
+    radial-gradient(1200px 600px at 100% -20%, rgba(37, 99, 235, 0.12), transparent 60%),
+    linear-gradient(180deg, #f4f8ff 0%, #eef3fb 45%, #edf3f8 100%);
+}
+
+.shell-top-nav {
+  background: transparent;
+}
+
+.shell-header-wrap {
+  border-bottom: var(--shell-border);
+  background: var(--shell-surface);
+  backdrop-filter: blur(12px);
+}
+
+.shell-global-nav.semi-navigation {
+  height: 60px;
+  border-bottom: 0;
+  background: transparent;
+  padding: 0 20px;
+}
+
+.shell-brand-logo {
+  font-size: 34px;
+  color: #0f6cff;
+}
+
+.shell-global-nav-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.shell-global-nav-icon {
+  font-size: 20px;
+  color: var(--semi-color-text-2);
+}
+
+.shell-global-nav-subline {
+  height: 34px;
+  padding: 0 24px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .shell-main {
@@ -12,55 +60,21 @@
   overflow: hidden;
 }
 
-.shell-header-inner {
-  height: 100%;
-  padding: 0 var(--semi-spacing-base);
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: var(--semi-spacing-base-tight);
-  border-bottom: 1px solid var(--semi-color-border);
-  background: var(--semi-color-bg-1);
-}
-
-.shell-header-left,
-.shell-header-right {
-  min-width: 0;
-}
-
-.shell-current-label {
-  display: inline-block;
-  max-width: clamp(180px, 24vw, 360px);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.shell-search-input {
-  width: clamp(160px, 22vw, 260px);
-}
-
-.shell-header-entry-wrap {
-  min-width: 0;
-  display: flex;
-  justify-content: center;
-}
-
-.shell-header-entry-switch {
-  display: inline-flex;
-  max-width: 100%;
-  overflow: auto;
-  padding: var(--semi-spacing-extra-tight);
-  border: 1px solid var(--semi-color-border);
-  border-radius: var(--semi-border-radius-circle);
-  background: var(--semi-color-fill-0);
-}
-
 .shell-left-sider,
 .shell-right-sider {
   min-width: 0;
   display: flex;
   flex-direction: column;
+  background: var(--shell-surface);
+  backdrop-filter: blur(10px);
+}
+
+.shell-left-sider {
+  border-right: var(--shell-border);
+}
+
+.shell-right-sider {
+  border-left: var(--shell-border);
 }
 
 .shell-side-inner {
@@ -72,57 +86,87 @@
 }
 
 .shell-side-group-title-wrap {
-  padding: var(--semi-spacing-base-tight);
-  border-bottom: 1px solid var(--semi-color-border);
+  padding: 16px 16px 10px;
+  border-bottom: var(--shell-border);
   display: grid;
-  gap: var(--semi-spacing-extra-tight);
+  gap: 4px;
 }
 
 .shell-side-nav {
   min-height: 0;
   overflow: auto;
-  background: var(--semi-color-bg-0);
+  background: transparent;
+}
+
+.shell-side-nav .semi-navigation-sub,
+.shell-side-nav .semi-navigation-list {
+  padding-top: 8px;
+}
+
+.shell-side-nav .semi-navigation-item {
+  margin: 2px 10px;
+  border-radius: 10px;
 }
 
 .shell-side-toggle-wrap {
-  padding: var(--semi-spacing-base-tight);
-  border-top: 1px solid var(--semi-color-border);
+  padding: 10px 12px 12px;
+  border-top: var(--shell-border);
 }
 
 .shell-workspace {
   min-width: 0;
   min-height: 0;
+  background: transparent;
 }
 
 .shell-content-wrap {
   min-width: 0;
   min-height: 0;
-  padding: var(--semi-spacing-base);
+  padding: 20px 24px 16px;
   overflow: auto;
-  background: var(--semi-color-bg-0);
+  background: transparent;
+}
+
+.shell-content-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .shell-content-inner {
   min-width: 0;
-  min-height: 100%;
+  min-height: calc(100% - 54px);
+  display: grid;
+  gap: 16px;
+}
+
+.shell-content-inner .semi-card,
+.context-panel .semi-card {
+  border-radius: 14px;
+  border: var(--shell-border);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+  background: rgba(255, 255, 255, 0.94);
 }
 
 .context-panel {
   height: 100%;
   min-height: 0;
   overflow: auto;
-  padding: var(--semi-spacing-base-tight);
-  background: var(--semi-color-bg-0);
+  padding: 14px;
+  background: transparent;
 }
 
 .shell-footer-inner {
   height: 100%;
-  padding: 0 var(--semi-spacing-base);
-  border-top: 1px solid var(--semi-color-border);
+  padding: 0 18px;
+  border-top: var(--shell-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--semi-color-bg-1);
+  background: var(--shell-surface);
+  backdrop-filter: blur(8px);
 }
 
 .shell-progress-wrap {
@@ -131,12 +175,12 @@
 
 .page-block {
   display: grid;
-  gap: var(--semi-spacing-base-tight);
+  gap: 16px;
 }
 
 .page-toolbar {
   display: flex;
-  gap: var(--semi-spacing-tight);
+  gap: 12px;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -144,47 +188,34 @@
 
 .page-grid-2 {
   display: grid;
-  gap: var(--semi-spacing-base-tight);
+  gap: 16px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .page-grid-3 {
   display: grid;
-  gap: var(--semi-spacing-base-tight);
+  gap: 16px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-@media (max-width: 1500px) {
-  .shell-header-inner {
-    grid-template-columns: 1fr;
-    height: auto;
-    min-height: 56px;
-    padding-top: var(--semi-spacing-extra-tight);
-    padding-bottom: var(--semi-spacing-extra-tight);
-  }
-
-  .shell-header-entry-wrap {
-    justify-content: flex-start;
-  }
-
-  .shell-header-left .semi-space,
-  .shell-header-right .semi-space {
-    flex-wrap: wrap;
+@media (max-width: 1360px) {
+  .shell-global-nav-subline {
+    display: none;
   }
 }
 
 @media (max-width: 1280px) {
+  .shell-content-wrap {
+    padding: 14px;
+  }
+
   .page-grid-2,
   .page-grid-3 {
     grid-template-columns: minmax(0, 1fr);
   }
 }
 
-@media (max-width: 1200px) {
-  .shell-content-wrap {
-    padding: var(--semi-spacing-base-tight);
-  }
-
+@media (max-width: 1120px) {
   .shell-progress-wrap {
     display: none;
   }

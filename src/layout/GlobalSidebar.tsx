@@ -1,4 +1,15 @@
+import type { ReactNode } from 'react'
 import { Nav, Typography } from '@douyinfe/semi-ui'
+import {
+  IconActivity,
+  IconApps,
+  IconCheckList,
+  IconCrown,
+  IconHistogram,
+  IconInfoCircle,
+  IconList,
+  IconSetting,
+} from '@douyinfe/semi-icons'
 import type { AppGroup, AppRouteItem } from '../app/routes-config'
 
 interface GlobalSidebarProps {
@@ -14,6 +25,17 @@ interface NavSelectData {
   itemKey?: string | number
 }
 
+const ROUTE_ICON_MAP: Record<string, ReactNode> = {
+  'agent-cases': <IconList />,
+  'agent-run': <IconActivity />,
+  'agent-stats': <IconHistogram />,
+  'rlhf-generate': <IconCrown />,
+  'rlhf-vlm': <IconApps />,
+  'rlhf-labels': <IconCheckList />,
+  settings: <IconSetting />,
+  about: <IconInfoCircle />,
+}
+
 export function GlobalSidebar({
   collapsed,
   currentPath,
@@ -25,6 +47,7 @@ export function GlobalSidebar({
   const items = routes.map((route) => ({
     itemKey: route.path,
     text: route.label,
+    icon: ROUTE_ICON_MAP[route.key] ?? <IconList />,
   }))
 
   return (

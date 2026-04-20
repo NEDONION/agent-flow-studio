@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "@babel/runtime": "7.26.0",
+    "typescript": "latest",
+    "@douyinfe/semi-ui": "2.61.0",
+    "@douyinfe/semi-icons": "2.61.0",
+    "@douyinfe/semi-icons-lab": "2.61.0"
+  }
+}

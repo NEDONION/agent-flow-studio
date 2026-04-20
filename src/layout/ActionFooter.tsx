@@ -4,8 +4,8 @@ export function ActionFooter() {
   return (
     <div className="shell-footer-inner">
       <Space spacing="medium" align="center">
-        <Button type="primary">主操作</Button>
-        <Button theme="borderless">次操作</Button>
+        <Button type="primary">开始任务</Button>
+        <Button theme="borderless">批量导入</Button>
         <Tag color="green">就绪</Tag>
       </Space>
 

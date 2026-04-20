@@ -1,4 +1,5 @@
-import { Button, Input, Radio, Space, Tag, Typography } from '@douyinfe/semi-ui'
+import { Avatar, Button, Nav, Space, Tag, Typography } from '@douyinfe/semi-ui'
+import { IconBell, IconFeishuLogo, IconHelpCircle, IconSemiLogo, IconSetting } from '@douyinfe/semi-icons'
 import type { AppGroup } from '../app/routes-config'
 
 interface HeaderEntryItem {
@@ -29,61 +30,64 @@ export function GlobalHeader({
   onNavigateGroup,
   onNavigateSettings,
 }: GlobalHeaderProps) {
+  const knownGroups = new Set<AppGroup>(['agent', 'rlhf', 'system'])
+
   return (
-    <div className="shell-header-inner">
-      <div className="shell-header-left">
-        <Space spacing="medium" align="center">
-          <Typography.Title heading={5} style={{ margin: 0 }}>
-            agent-flow-studio
-          </Typography.Title>
-          <Tag color="blue" size="small">
-            桌面端
-          </Tag>
-          <Typography.Text type="tertiary" className="shell-current-label">
-            当前页面：{currentLabel}
-          </Typography.Text>
-        </Space>
-      </div>
-
-      <div className="shell-header-entry-wrap">
-        <div className="shell-header-entry-switch">
-          <Radio.Group
-            direction="horizontal"
-            type="button"
-            value={currentGroup}
-            onChange={(value) => {
-              if (typeof value === 'string') {
-                onNavigateGroup(value as AppGroup)
-              }
-            }}
-          >
-            {entries.map((entry) => (
-              <Radio key={entry.key} value={entry.key}>
-                {entry.label}
-              </Radio>
-            ))}
-          </Radio.Group>
-        </div>
-      </div>
-
-      <div className="shell-header-right">
-        <Space spacing={8} align="center" wrap>
-          {!compact ? (
-            <Input
-              showClear
-              className="shell-search-input"
-              placeholder="全局搜索（功能/路由）"
-              aria-label="全局搜索"
+    <div className="shell-header-wrap">
+      <Nav
+        mode="horizontal"
+        className="shell-global-nav"
+        selectedKeys={[currentGroup]}
+        header={{
+          logo: <IconSemiLogo className="shell-brand-logo" />,
+          text: 'agent-flow-studio',
+        }}
+        onSelect={(data) => {
+          if (typeof data.itemKey !== 'string' || !knownGroups.has(data.itemKey as AppGroup)) {
+            return
+          }
+          onNavigateGroup(data.itemKey as AppGroup)
+        }}
+        footer={
+          <div className="shell-global-nav-actions">
+            <IconFeishuLogo className="shell-global-nav-icon" />
+            <IconHelpCircle className="shell-global-nav-icon" />
+            <IconBell className="shell-global-nav-icon" />
+            <Button
+              theme="borderless"
+              icon={<IconSetting />}
+              onClick={onNavigateSettings}
+              aria-label="打开设置"
             />
-          ) : null}
-          <Button theme="borderless" disabled={!contextEnabled} onClick={onToggleContext}>
-            {contextEnabled ? (contextVisible ? '收起右栏' : '展开右栏') : '右栏(窄屏隐藏)'}
-          </Button>
-          <Button theme="solid" type="primary" onClick={onNavigateSettings}>
-            设置
-          </Button>
-        </Space>
-      </div>
+            {contextEnabled ? (
+              <Button theme="borderless" onClick={onToggleContext}>
+                {contextVisible ? '收起右栏' : '展开右栏'}
+              </Button>
+            ) : null}
+            <Avatar size="small" color="light-blue">
+              AF
+            </Avatar>
+          </div>
+        }
+      >
+        {entries.map((entry) => (
+          <Nav.Item key={entry.key} itemKey={entry.key} text={entry.label} />
+        ))}
+      </Nav>
+
+      {!compact ? (
+        <div className="shell-global-nav-subline">
+          <Space spacing={8} align="center">
+            <Tag color="blue" size="small">
+              桌面端
+            </Tag>
+            <Typography.Text type="tertiary">当前页面：{currentLabel}</Typography.Text>
+          </Space>
+          <Typography.Text type="quaternary">
+            {contextEnabled ? '右侧上下文面板可按需展开' : '窗口较窄，右侧上下文面板自动隐藏'}
+          </Typography.Text>
+        </div>
+      ) : null}
     </div>
   )
 }

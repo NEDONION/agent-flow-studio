@@ -1,4 +1,4 @@
-import { Button, Layout } from '@douyinfe/semi-ui'
+import { Button, Layout, Tag, Typography } from '@douyinfe/semi-ui'
 import { useEffect, useMemo, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { findRouteByPath, getGroupMeta, getRoutesByGroup, PRIMARY_GROUPS, type AppGroup } from './routes-config'
@@ -8,7 +8,6 @@ import { GlobalHeader } from '../layout/GlobalHeader'
 import { GlobalSidebar } from '../layout/GlobalSidebar'
 import './app-shell.css'
 
-const HEADER_HEIGHT = 56
 const FOOTER_HEIGHT = 40
 const SIDEBAR_WIDTH = 240
 const SIDEBAR_COLLAPSED_WIDTH = 72
@@ -40,12 +39,13 @@ export function AppShell() {
   const currentGroup = (currentRoute?.group ?? 'agent') as AppGroup
   const currentGroupMeta = getGroupMeta(currentGroup)
   const currentGroupRoutes = useMemo(() => getRoutesByGroup(currentGroup), [currentGroup])
-  const compactMode = viewportWidth < 1320
-  const contextEnabled = viewportWidth >= 1200
+  const compactMode = viewportWidth < 1280
+  const contextEnabled = viewportWidth >= 1360
   const effectiveSidebarCollapsed = sidebarCollapsed || compactMode
-  const sidebarWidth = effectiveSidebarCollapsed ? SIDEBAR_COLLAPSED_WIDTH : (viewportWidth < 1500 ? 208 : SIDEBAR_WIDTH)
-  const contextWidth = viewportWidth < 1440 ? 280 : CONTEXT_WIDTH
+  const sidebarWidth = effectiveSidebarCollapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_WIDTH
+  const contextWidth = viewportWidth < 1520 ? 296 : CONTEXT_WIDTH
   const shouldShowContext = contextVisible && contextEnabled
+  const headerHeight = compactMode ? 60 : 94
 
   const headerEntries = PRIMARY_GROUPS.map((group) => {
     const meta = getGroupMeta(group)
@@ -54,7 +54,7 @@ export function AppShell() {
 
   return (
     <Layout className="shell-root">
-      <Layout.Header style={{ minHeight: HEADER_HEIGHT, padding: 0 }}>
+      <Layout.Header className="shell-top-nav" style={{ minHeight: headerHeight, padding: 0 }}>
         <GlobalHeader
           currentLabel={currentLabel}
           currentGroup={currentGroup}
@@ -83,7 +83,6 @@ export function AppShell() {
           style={{
             width: sidebarWidth,
             flex: `0 0 ${sidebarWidth}px`,
-            borderRight: '1px solid var(--semi-color-border)',
           }}
         >
           <GlobalSidebar
@@ -104,13 +103,21 @@ export function AppShell() {
                 setSidebarCollapsed((value) => !value)
               }}
             >
-              {effectiveSidebarCollapsed ? '展开导航' : '收起导航'}
+              {effectiveSidebarCollapsed ? '展开导航栏' : '收起导航栏'}
             </Button>
           </div>
         </Layout.Sider>
 
         <Layout className="shell-workspace">
           <Layout.Content className="shell-content-wrap">
+            <div className="shell-content-head">
+              <Typography.Title heading={5} style={{ margin: 0 }}>
+                {currentLabel}
+              </Typography.Title>
+              <Tag color="blue" size="small">
+                {currentGroupMeta.label}
+              </Tag>
+            </div>
             <div className="shell-content-inner">
               <Outlet />
             </div>
@@ -127,7 +134,6 @@ export function AppShell() {
             style={{
               width: contextWidth,
               flex: `0 0 ${contextWidth}px`,
-              borderLeft: '1px solid var(--semi-color-border)',
             }}
           >
             <ContextPanel currentLabel={currentLabel} />
